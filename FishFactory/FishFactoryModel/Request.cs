@@ -19,5 +19,7 @@ namespace FishFactoryModel
         public RequestStatus Status { get; set; } //OrderStatus
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual CannedFood CannedFood { get; set; }
     }
 }

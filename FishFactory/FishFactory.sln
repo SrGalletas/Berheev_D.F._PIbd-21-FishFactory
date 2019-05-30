@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishFactoryServiceImplement
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishFactoryView", "FishFactoryView\FishFactoryView.csproj", "{21081A00-8C5C-4FEC-8501-CAA36CB73A79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishFactoryServiceImplementDataBase", "FishFactoryServiceImplementDataBase\FishFactoryServiceImplementDataBase.csproj", "{3489F7BF-B4A3-44E7-8548-58AD5817ACAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{21081A00-8C5C-4FEC-8501-CAA36CB73A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21081A00-8C5C-4FEC-8501-CAA36CB73A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21081A00-8C5C-4FEC-8501-CAA36CB73A79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3489F7BF-B4A3-44E7-8548-58AD5817ACAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3489F7BF-B4A3-44E7-8548-58AD5817ACAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3489F7BF-B4A3-44E7-8548-58AD5817ACAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3489F7BF-B4A3-44E7-8548-58AD5817ACAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

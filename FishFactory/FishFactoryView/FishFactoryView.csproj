@@ -32,7 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -198,6 +205,10 @@
     <ProjectReference Include="..\FishFactoryServiceDAL\FishFactoryServiceDAL.csproj">
       <Project>{4f955128-8894-4f18-a29c-5ace7dfd8f94}</Project>
       <Name>FishFactoryServiceDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FishFactoryServiceImplementDataBase\FishFactoryServiceImplementDataBase.csproj">
+      <Project>{3489f7bf-b4a3-44e7-8548-58ad5817acaa}</Project>
+      <Name>FishFactoryServiceImplementDataBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\FishFactoryServiceImplementList\FishFactoryServiceImplementList.csproj">
       <Project>{ee3a94f8-50e4-4467-bd01-80e7667a7360}</Project>

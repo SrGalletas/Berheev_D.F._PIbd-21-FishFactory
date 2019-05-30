@@ -25,7 +25,7 @@ namespace FishFactoryServiceImplementList.Implementations
                     Id = rec.Id,
                     CannedFoodName = rec.CannedFoodName,
                     Cost = rec.Cost,
-                    TypeOfCanneds = source.TypeOfCanneds
+                    TypeOfCanned = source.TypeOfCanneds
                             .Where(recPC => recPC.CannedFoodId == rec.Id)
                             .Select(recPC => new TypeOfCannedViewM
                             {
@@ -51,7 +51,7 @@ namespace FishFactoryServiceImplementList.Implementations
                     Id = element.Id,
                     CannedFoodName = element.CannedFoodName,
                     Cost = element.Cost,
-                    TypeOfCanneds = source.TypeOfCanneds
+                    TypeOfCanned = source.TypeOfCanneds
                 .Where(recPC => recPC.CannedFoodId == element.Id)
                 .Select(recPC => new TypeOfCannedViewM
                 {

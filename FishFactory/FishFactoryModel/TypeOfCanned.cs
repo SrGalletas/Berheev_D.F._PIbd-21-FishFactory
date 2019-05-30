@@ -15,5 +15,7 @@ namespace FishFactoryModel
         public int CannedFoodId { get; set; } //ProductId
         public int TypeOfFishId { get; set; } //ComponentId
         public int Total { get; set; } //Count
+        public virtual CannedFood CannedFoods { get; set; }
+        public virtual TypeOfFish TypesOfFish { get; set; }
     }
 }

@@ -14,6 +14,6 @@ namespace FishFactoryServiceDAL.ViewM
         public string CannedFoodName { get; set; }
         [DisplayName("Цена")]
         public decimal Cost { get; set; } //Price
-        public List<TypeOfCannedViewM> TypeOfCanneds { get; set; }
+        public List<TypeOfCannedViewM> TypeOfCanned { get; set; }
     }
 }

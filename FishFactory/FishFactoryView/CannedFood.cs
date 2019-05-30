@@ -38,7 +38,7 @@ namespace FishFactoryView
                     {
                         textBoxName.Text = view.CannedFoodName;
                         textBoxCost.Text = view.Cost.ToString();
-                        typeOfCanneds = view.TypeOfCanneds;
+                        typeOfCanneds = view.TypeOfCanned;
                         LoadData();
                     }
                 }

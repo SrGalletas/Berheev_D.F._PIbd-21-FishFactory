@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FishFactoryServiceDAL.Interfaces;
 using FishFactoryServiceImplementList.Implementations;
+using FishFactoryServiceImplementDataBase;
 using Unity;
 using Unity.Lifetime;
+using AbstractGarmentFactoryServiceImplementDataBase.Implementations;
 
 namespace FishFactoryView
 {
@@ -27,16 +30,17 @@ namespace FishFactoryView
         public static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new
+            currentContainer.RegisterType<ICustomerService, CustomerServiceDb>(new
             HierarchicalLifetimeManager());
-            currentContainer.RegisterType<ITypeOfFishService, TypeOfFishServiceList>(new
+            currentContainer.RegisterType<ITypeOfFishService, TypeOfFishServiceDb>(new
 HierarchicalLifetimeManager());
-            currentContainer.RegisterType<ICannedFoodService, CannedFoodServiceList>(new
+            currentContainer.RegisterType<ICannedFoodService, CannedFoodServiceDb>(new
             HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IMainService, MainServiceList>(new
+            currentContainer.RegisterType<IMainService, MainServiceDb>(new
             HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IStorageService, StorageServiceList>(new
+            currentContainer.RegisterType<IStorageService, StorageServiceDb>(new
             HierarchicalLifetimeManager());
+            currentContainer.RegisterType<DbContext, AbstractDbEnvironment>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

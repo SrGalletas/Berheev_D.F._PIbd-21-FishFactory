@@ -15,5 +15,7 @@ namespace FishFactoryModel
         public int StorageId { get; set; }
         public int TypeOfFishId { get; set; }
         public int Total { get; set; }
+        public virtual Storage Storages { get; set; }
+        public virtual TypeOfFish TypesOfFish { get; set; }
     }
 }
