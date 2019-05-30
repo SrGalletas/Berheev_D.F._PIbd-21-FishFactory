@@ -19,103 +19,64 @@ namespace FishFactoryServiceImplementList.Implementations
         }
         public List<CannedFoodViewM> GetList()
         {
-            List<CannedFoodViewM> result = new List<CannedFoodViewM>();
-            for (int i = 0; i < source.CannedFoods.Count; ++i)
-            {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-                List<TypeOfCannedViewM> typeOfCanneds = new List<TypeOfCannedViewM>();
-                for (int j = 0; j < source.TypeOfCanneds.Count; ++j)
+            List<CannedFoodViewM> result = source.CannedFoods
+                .Select(rec => new CannedFoodViewM
                 {
-                    if (source.TypeOfCanneds[j].CannedFoodId == source.CannedFoods[i].Id)
-                    {
-                        string typeOfFishName = string.Empty;
-                        for (int k = 0; k < source.TypesOfFish.Count; ++k)
-                        {
-                            if (source.TypeOfCanneds[j].TypeOfFishId ==
-                            source.TypesOfFish[k].Id)
+                    Id = rec.Id,
+                    CannedFoodName = rec.CannedFoodName,
+                    Cost = rec.Cost,
+                    TypeOfCanneds = source.TypeOfCanneds
+                            .Where(recPC => recPC.CannedFoodId == rec.Id)
+                            .Select(recPC => new TypeOfCannedViewM
                             {
-                                typeOfFishName = source.TypesOfFish[k].TypeOfFishName;
-                                break;
-                            }
-                        }
-                        typeOfCanneds.Add(new TypeOfCannedViewM
-                        {
-                            Id = source.TypeOfCanneds[j].Id,
-                            CannedFoodId = source.TypeOfCanneds[j].CannedFoodId,
-                            TypeOfFishId = source.TypeOfCanneds[j].TypeOfFishId,
-                            TypeOfFishName = typeOfFishName,
-                            Total = source.TypeOfCanneds[j].Total
-                        });
-                    }
-                }
-                result.Add(new CannedFoodViewM
-                {
-                    Id = source.CannedFoods[i].Id,
-                    CannedFoodName = source.CannedFoods[i].CannedFoodName,
-                    Cost = source.CannedFoods[i].Cost,
-                    TypeOfCanneds = typeOfCanneds
-                });
-            }
+                                Id = recPC.Id,
+                                CannedFoodId = recPC.CannedFoodId,
+                                TypeOfFishId = recPC.TypeOfFishId,
+                                TypeOfFishName = source.TypesOfFish.FirstOrDefault(recC =>
+                                recC.Id == recPC.TypeOfFishId)?.TypeOfFishName,
+                                Total = recPC.Total
+                            })
+                        .ToList()
+                })
+                .ToList();
             return result;
         }
         public CannedFoodViewM GetElement(int id)
         {
-            for (int i = 0; i < source.CannedFoods.Count; ++i)
+            CannedFood element = source.CannedFoods.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                // требуется дополнительно получить список компонентов для изделия и их количество
-                List<TypeOfCannedViewM> typesOfCanned = new
-                List<TypeOfCannedViewM>();
-                for (int j = 0; j < source.TypeOfCanneds.Count; ++j)
+                return new CannedFoodViewM
                 {
-                    if (source.TypeOfCanneds[j].CannedFoodId == source.CannedFoods[i].Id)
-                    {
-                        string typeOfFishName = string.Empty;
-                        for (int k = 0; k < source.TypesOfFish.Count; ++k)
-                        {
-                            if (source.TypeOfCanneds[j].TypeOfFishId ==
-                            source.TypesOfFish[k].Id)
-                            {
-                                typeOfFishName = source.TypesOfFish[k].TypeOfFishName;
-                                break;
-                            }
-                        }
-                        typesOfCanned.Add(new TypeOfCannedViewM
-                        {
-                            Id = source.TypeOfCanneds[j].Id,
-                            CannedFoodId = source.TypeOfCanneds[j].CannedFoodId,
-                            TypeOfFishId = source.TypeOfCanneds[j].TypeOfFishId,
-                            TypeOfFishName = typeOfFishName,
-                            Total = source.TypeOfCanneds[j].Total
-                        });
-                    }
-                }
-                if (source.CannedFoods[i].Id == id)
+                    Id = element.Id,
+                    CannedFoodName = element.CannedFoodName,
+                    Cost = element.Cost,
+                    TypeOfCanneds = source.TypeOfCanneds
+                .Where(recPC => recPC.CannedFoodId == element.Id)
+                .Select(recPC => new TypeOfCannedViewM
                 {
-                    return new CannedFoodViewM
-                    {
-                        Id = source.CannedFoods[i].Id,
-                        CannedFoodName = source.CannedFoods[i].CannedFoodName,
-                        Cost = source.CannedFoods[i].Cost,
-                        TypeOfCanneds = typesOfCanned
-                    };
-                }
+                    Id = recPC.Id,
+                    CannedFoodId = recPC.CannedFoodId,
+                    TypeOfFishId = recPC.TypeOfFishId,
+                    TypeOfFishName = source.TypesOfFish.FirstOrDefault(recC =>
+    recC.Id == recPC.TypeOfFishId)?.TypeOfFishName,
+                    Total = recPC.Total
+                })
+                .ToList()
+                };
             }
             throw new Exception("Элемент не найден");
         }
         public void AddElement(CannedFoodBindingM model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.CannedFoods.Count; ++i)
+            CannedFood element = source.CannedFoods.FirstOrDefault(rec => rec.CannedFoodName ==
+            model.CannedFoodName);
+            if (element != null)
             {
-                if (source.CannedFoods[i].Id > maxId)
-                {
-                    maxId = source.CannedFoods[i].Id;
-                }
-                if (source.CannedFoods[i].CannedFoodName == model.CannedFoodName)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть изделие с таким названием");
             }
+            int maxId = source.CannedFoods.Count > 0 ? source.CannedFoods.Max(rec => rec.Id) :
+            0;
             source.CannedFoods.Add(new CannedFood
             {
                 Id = maxId + 1,
@@ -123,145 +84,100 @@ namespace FishFactoryServiceImplementList.Implementations
                 Cost = model.Cost
             });
             // компоненты для изделия
-            int maxPCId = 0;
-            for (int i = 0; i < source.TypeOfCanneds.Count; ++i)
-            {
-                if (source.TypeOfCanneds[i].Id > maxPCId)
-                {
-                    maxPCId = source.TypeOfCanneds[i].Id;
-                }
-            }
+            int maxPCId = source.TypeOfCanneds.Count > 0 ?
+            source.TypeOfCanneds.Max(rec => rec.Id) : 0;
             // убираем дубли по компонентам
-            for (int i = 0; i < model.TypeOfCanneds.Count; ++i)
+            var groupTypesOfFish = model.TypeOfCanneds
+            .GroupBy(rec => rec.TypeOfFishId)
+            .Select(rec => new
             {
-                for (int j = 1; j < model.TypeOfCanneds.Count; ++j)
-                {
-                    if (model.TypeOfCanneds[i].TypeOfFishId ==
-                    model.TypeOfCanneds[j].TypeOfFishId)
-                    {
-                        model.TypeOfCanneds[i].Total +=
-                        model.TypeOfCanneds[j].Total;
-                        model.TypeOfCanneds.RemoveAt(j--);
-                    }
-                }
-            }
+                TypeOfFishId = rec.Key,
+                Total = rec.Sum(r => r.Total)
+            });
             // добавляем компоненты
-            for (int i = 0; i < model.TypeOfCanneds.Count; ++i)
+            foreach (var groupTypeOfFish in groupTypesOfFish)
             {
                 source.TypeOfCanneds.Add(new TypeOfCanned
                 {
                     Id = ++maxPCId,
                     CannedFoodId = maxId + 1,
-                    TypeOfFishId = model.TypeOfCanneds[i].TypeOfFishId,
-                    Total = model.TypeOfCanneds[i].Total
+
+                    TypeOfFishId = groupTypeOfFish.TypeOfFishId,
+                    Total = groupTypeOfFish.Total
                 });
             }
         }
         public void UpdElement(CannedFoodBindingM model)
         {
-            int index = -1;
-            for (int i = 0; i < source.CannedFoods.Count; ++i)
+            CannedFood element = source.CannedFoods.FirstOrDefault(rec => rec.CannedFoodName ==
+            model.CannedFoodName && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.CannedFoods[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.CannedFoods[i].CannedFoodName == model.CannedFoodName &&
-                source.CannedFoods[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть изделие с таким названием");
-                }
+                throw new Exception("Уже есть изделие с таким названием");
             }
-            if (index == -1)
+            element = source.CannedFoods.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            source.CannedFoods[index].CannedFoodName = model.CannedFoodName;
-            source.CannedFoods[index].Cost = model.Cost;
-            int maxPCId = 0;
-            for (int i = 0; i < source.TypeOfCanneds.Count; ++i)
+            element.CannedFoodName = model.CannedFoodName;
+            element.Cost = model.Cost;
+            int maxPCId = source.TypeOfCanneds.Count > 0 ?
+            source.TypeOfCanneds.Max(rec => rec.Id) : 0;
+            // обновляем существуюущие компоненты
+            var compIds = model.TypeOfCanneds.Select(rec =>
+            rec.TypeOfFishId).Distinct();
+            var updateTypesOfFish = source.TypeOfCanneds.Where(rec => rec.CannedFoodId ==
+            model.Id && compIds.Contains(rec.TypeOfFishId));
+            foreach (var updateTypeOfFish in updateTypesOfFish)
             {
-                if (source.TypeOfCanneds[i].Id > maxPCId)
-                {
-                    maxPCId = source.TypeOfCanneds[i].Id;
-                }
-            } // обновляем существуюущие компоненты
-            for (int i = 0; i < source.TypeOfCanneds.Count; ++i)
-            {
-                if (source.TypeOfCanneds[i].CannedFoodId == model.Id)
-                {
-                    bool flag = true;
-                    for (int j = 0; j < model.TypeOfCanneds.Count; ++j)
-                    {
-                        // если встретили, то изменяем количество
-                        if (source.TypeOfCanneds[i].Id ==
-                        model.TypeOfCanneds[j].Id)
-                        {
-                            source.TypeOfCanneds[i].Total =
-                            model.TypeOfCanneds[j].Total;
-                            flag = false;
-                            break;
-                        }
-                    }
-                    // если не встретили, то удаляем
-                    if (flag)
-                    {
-                        source.TypeOfCanneds.RemoveAt(i--);
-                    }
-                }
+                updateTypeOfFish.Total = model.TypeOfCanneds.FirstOrDefault(rec =>
+                rec.Id == updateTypeOfFish.Id).Total;
             }
+            source.TypeOfCanneds.RemoveAll(rec => rec.CannedFoodId == model.Id &&
+            !compIds.Contains(rec.TypeOfFishId));
             // новые записи
-            for (int i = 0; i < model.TypeOfCanneds.Count; ++i)
+            var groupTypesOfFish = model.TypeOfCanneds
+            .Where(rec => rec.Id == 0)
+            .GroupBy(rec => rec.TypeOfFishId)
+            .Select(rec => new
             {
-                if (model.TypeOfCanneds[i].Id == 0)
+                TypeOfFishId = rec.Key,
+                Count = rec.Sum(r => r.Total)
+            });
+            foreach (var groupTypeOfFish in groupTypesOfFish)
+            {
+                TypeOfCanned elementPC = source.TypeOfCanneds.FirstOrDefault(rec
+                => rec.CannedFoodId == model.Id && rec.TypeOfFishId == groupTypeOfFish.TypeOfFishId);
+                if (elementPC != null)
                 {
-                    // ищем дубли
-                    for (int j = 0; j < source.TypeOfCanneds.Count; ++j)
+                    elementPC.Total += groupTypeOfFish.Count;
+                }
+                else
+                {
+                    source.TypeOfCanneds.Add(new TypeOfCanned
                     {
-                        if (source.TypeOfCanneds[j].CannedFoodId == model.Id &&
-                        source.TypeOfCanneds[j].TypeOfFishId ==
-                        model.TypeOfCanneds[i].TypeOfFishId)
-                        {
-                            source.TypeOfCanneds[j].Total +=
-                            model.TypeOfCanneds[i].Total;
-                            model.TypeOfCanneds[i].Id =
-                            source.TypeOfCanneds[j].Id;
-                            break;
-                        }
-                    }
-                    // если не нашли дубли, то новая запись
-                    if (model.TypeOfCanneds[i].Id == 0)
-                    {
-                        source.TypeOfCanneds.Add(new TypeOfCanned
-                        {
-                            Id = ++maxPCId,
-                            CannedFoodId = model.Id,
-                            TypeOfFishId = model.TypeOfCanneds[i].TypeOfFishId,
-                            Total = model.TypeOfCanneds[i].Total
-                        });
-                    }
+                        Id = ++maxPCId,
+                        CannedFoodId = model.Id,
+                        TypeOfFishId = groupTypeOfFish.TypeOfFishId,
+                        Total = groupTypeOfFish.Count
+                    });
                 }
             }
         }
         public void DelElement(int id)
         {
-            // удаяем записи по компонентам при удалении изделия
-            for (int i = 0; i < source.TypeOfCanneds.Count; ++i)
+            CannedFood element = source.CannedFoods.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.TypeOfCanneds[i].CannedFoodId == id)
-                {
-                    source.TypeOfCanneds.RemoveAt(i--);
-                }
+                // удаяем записи по компонентам при удалении изделия
+                source.TypeOfCanneds.RemoveAll(rec => rec.CannedFoodId == id);
+                source.CannedFoods.Remove(element);
             }
-            for (int i = 0; i < source.CannedFoods.Count; ++i)
+            else
             {
-                if (source.CannedFoods[i].Id == id)
-                {
-                    source.CannedFoods.RemoveAt(i);
-                    return;
-                }
+                throw new Exception("Элемент не найден");
             }
-            throw new Exception("Элемент не найден");
         }
     }
 }

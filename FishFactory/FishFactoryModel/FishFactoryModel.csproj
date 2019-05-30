@@ -45,6 +45,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="RequestStatus.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="StorageFish.cs" />
     <Compile Include="TypeOfCanned.cs" />
     <Compile Include="TypeOfFish.cs" />
   </ItemGroup>

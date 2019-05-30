@@ -19,54 +19,28 @@ namespace FishFactoryServiceImplementList.Implementations
         }
         public List<RequestViewM> GetList()
         {
-            List<RequestViewM> result = new List<RequestViewM>();
-            for (int i = 0; i < source.Requests.Count; ++i)
+            List<RequestViewM> result = source.Requests
+            .Select(rec => new RequestViewM
             {
-                string customerFIO = string.Empty;
-                for (int j = 0; j < source.Requests.Count; ++j)
-                {
-                    if (source.Customers[j].Id == source.Requests[i].CustomerId)
-                    {
-                        customerFIO = source.Customers[j].CustomerFIO;
-                        break;
-                    }
-                }
-
-                string cannedFoodName = string.Empty;
-                for (int j = 0; j < source.CannedFoods.Count; ++j)
-                {
-                    if (source.CannedFoods[j].Id == source.Requests[i].CannedFoodId)
-                    {
-                        cannedFoodName = source.CannedFoods[j].CannedFoodName;
-                        break;
-                    }
-                }
-                result.Add(new RequestViewM
-                {
-                    Id = source.Requests[i].Id,
-                    CustomerId = source.Requests[i].CustomerId,
-                    CustomerFIO = customerFIO,
-                    CannedFoodId = source.Requests[i].CannedFoodId,
-                    CannedFoodName = cannedFoodName,
-                    Total = source.Requests[i].Total,
-                    Amount = source.Requests[i].Amount,
-                    DateCreate = source.Requests[i].DateCreate.ToLongDateString(),
-                    DateImplement = source.Requests[i].DateImplement?.ToLongDateString(),
-                    Status = source.Requests[i].Status.ToString()
-                });
-            }
+                Id = rec.Id,
+                CustomerId = rec.CustomerId,
+                CannedFoodId = rec.CannedFoodId,
+                DateCreate = rec.DateCreate.ToLongDateString(),
+                DateImplement = rec.DateImplement?.ToLongDateString(),
+                Status = rec.Status.ToString(),
+                Total = rec.Total,
+                Amount = rec.Amount,
+                CustomerFIO = source.Customers.FirstOrDefault(recC => recC.Id ==
+                rec.CustomerId)?.CustomerFIO,
+                CannedFoodName = source.CannedFoods.FirstOrDefault(recP => recP.Id ==
+                rec.CannedFoodId)?.CannedFoodName,
+            })
+            .ToList();
             return result;
         }
         public void CreateRequest(RequestBindingM model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Requests.Count; ++i)
-            {
-                if (source.Requests[i].Id > maxId)
-                {
-                    maxId = source.Requests[i].Id;
-                }
-            }
+            int maxId = source.Requests.Count > 0 ? source.Requests.Max(rec => rec.Id) : 0;
             source.Requests.Add(new Request
             {
                 Id = maxId + 1,
@@ -80,67 +54,103 @@ namespace FishFactoryServiceImplementList.Implementations
         }
         public void TakeRequestInWork(RequestBindingM model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Requests.Count; ++i)
-            {
-                if (source.Requests[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Request element = source.Requests.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Requests[index].Status != RequestStatus.Принят)
+            if (element.Status != RequestStatus.Принят)
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            source.Requests[index].DateImplement = DateTime.Now;
-            source.Requests[index].Status = RequestStatus.Выполняется;
+            // смотрим по количеству компонентов на складах
+            var typeOfCanneds = source.TypeOfCanneds.Where(rec => rec.CannedFoodId
+            == element.CannedFoodId);
+            foreach (var typeOfCanned in typeOfCanneds)
+            {
+                int countOnStorages = source.StorageFishes
+                .Where(rec => rec.TypeOfFishId ==
+                typeOfCanned.TypeOfFishId)
+                .Sum(rec => rec.Total);
+                if (countOnStorages < typeOfCanned.Total * element.Total)
+                {
+                    var typeOfFishName = source.TypesOfFish.FirstOrDefault(rec => rec.Id ==
+                    typeOfCanned.TypeOfFishId);
+                    throw new Exception("Не достаточно компонента " +
+                    typeOfFishName?.TypeOfFishName + " требуется " + (typeOfCanned.Total * element.Total) +
+                    ", в наличии " + countOnStorages);
+                }
+            }
+            // списываем
+            foreach (var typeOfCanned in typeOfCanneds)
+            {
+                int countOnStorages = typeOfCanned.Total * element.Total;
+                var storageFishes = source.StorageFishes.Where(rec => rec.TypeOfFishId
+                == typeOfCanned.TypeOfFishId);
+                foreach (var storageTypeOfFish in storageFishes)
+                {
+                    // компонентов на одном слкаде может не хватать
+                    if (storageTypeOfFish.Total >= countOnStorages)
+                    {
+                        storageTypeOfFish.Total -= countOnStorages;
+                        break;
+                    }
+                    else
+                    {
+                        countOnStorages -= storageTypeOfFish.Total;
+                        storageTypeOfFish.Total = 0;
+                    }
+                }
+            }
+            element.DateImplement = DateTime.Now;
+            element.Status = RequestStatus.Выполняется;
         }
         public void FinishRequest(RequestBindingM model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Requests.Count; ++i)
-            {
-                if (source.Requests[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Request element = source.Requests.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Requests[index].Status != RequestStatus.Выполняется)
+            if (element.Status != RequestStatus.Выполняется)
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
-            source.Requests[index].Status = RequestStatus.Готов;
+            element.Status = RequestStatus.Готов;
         }
         public void PayRequest(RequestBindingM model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Requests.Count; ++i)
-            {
-                if (source.Requests[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Request element = source.Requests.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Requests[index].Status != RequestStatus.Готов)
+            if (element.Status != RequestStatus.Готов)
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }
-            source.Requests[index].Status = RequestStatus.Оплачен;
+            element.Status = RequestStatus.Оплачен;
+        }
+        public void PutTypeOfFishOnStorage(StorageFishBindingM model)
+        {
+            StorageFish element = source.StorageFishes.FirstOrDefault(rec =>
+            rec.StorageId == model.StorageId && rec.TypeOfFishId == model.TypeOfFishId);
+            if (element != null)
+            {
+                element.Total += model.Total;
+            }
+            else
+            {
+                int maxId = source.StorageFishes.Count > 0 ?
+                source.StorageFishes.Max(rec => rec.Id) : 0;
+                source.StorageFishes.Add(new StorageFish
+                {
+                    Id = ++maxId,
+                    StorageId = model.StorageId,
+                    TypeOfFishId = model.TypeOfFishId,
+                    Total = model.Total
+                });
+            }
         }
     }
 }

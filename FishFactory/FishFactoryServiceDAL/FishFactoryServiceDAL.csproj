@@ -44,11 +44,14 @@
     <Compile Include="BindingM\CustomerBindingM.cs" />
     <Compile Include="BindingM\RequestBindingM.cs" />
     <Compile Include="BindingM\RequestStatusBindingM.cs" />
+    <Compile Include="BindingM\StorageBindingM.cs" />
+    <Compile Include="BindingM\StorageFishBindingM.cs" />
     <Compile Include="BindingM\TypeOfCannedBindingM.cs" />
     <Compile Include="BindingM\TypeOfFishBindingM.cs" />
     <Compile Include="Interfaces\ICannedFoodService.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Interfaces\IMainService.cs" />
+    <Compile Include="Interfaces\IStorageService.cs" />
     <Compile Include="Interfaces\ITypeOfCannedService.cs" />
     <Compile Include="Interfaces\ITypeOfFishService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +59,8 @@
     <Compile Include="ViewM\CustomerViewM.cs" />
     <Compile Include="ViewM\RequestStatusViewM.cs" />
     <Compile Include="ViewM\RequestViewM.cs" />
+    <Compile Include="ViewM\StorageFishViewM.cs" />
+    <Compile Include="ViewM\StorageViewM.cs" />
     <Compile Include="ViewM\TypeOfCannedViewM.cs" />
     <Compile Include="ViewM\TypeOfFishViewM.cs" />
   </ItemGroup>

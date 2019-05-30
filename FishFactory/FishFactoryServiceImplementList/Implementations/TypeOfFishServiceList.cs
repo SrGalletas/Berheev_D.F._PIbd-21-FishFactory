@@ -19,46 +19,39 @@ namespace FishFactoryServiceImplementList.Implementations
         }
         public List<TypeOfFishViewM> GetList()
         {
-            List<TypeOfFishViewM> result = new List<TypeOfFishViewM>();
-            for (int i = 0; i < source.TypesOfFish.Count; ++i)
+            List<TypeOfFishViewM> result = source.TypesOfFish.Select(rec => new
+TypeOfFishViewM
             {
-                result.Add(new TypeOfFishViewM
-                {
-                    Id = source.TypesOfFish[i].Id,
-                    TypeOfFishName = source.TypesOfFish[i].TypeOfFishName
-                });
-            }
+                Id = rec.Id,
+                TypeOfFishName = rec.TypeOfFishName
+            })
+            .ToList();
             return result;
         }
         public TypeOfFishViewM GetElement(int id)
         {
-            for (int i = 0; i < source.TypesOfFish.Count; ++i)
+            TypeOfFish element = source.TypesOfFish.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.TypesOfFish[i].Id == id)
+                return new TypeOfFishViewM
                 {
-                    return new TypeOfFishViewM
-                    {
-                        Id = source.TypesOfFish[i].Id,
-                        TypeOfFishName = source.TypesOfFish[i].TypeOfFishName
-                    };
-                }
+                    Id = element.Id,
+                    TypeOfFishName = element.TypeOfFishName
+                };
+
             }
             throw new Exception("Элемент не найден");
         }
         public void AddElement(TypeOfFishBindingM model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.TypesOfFish.Count; ++i)
+            TypeOfFish element = source.TypesOfFish.FirstOrDefault(rec => rec.TypeOfFishName
+            == model.TypeOfFishName);
+            if (element != null)
             {
-                if (source.TypesOfFish[i].Id > maxId)
-                {
-                    maxId = source.TypesOfFish[i].Id;
-                }
-                if (source.TypesOfFish[i].TypeOfFishName == model.TypeOfFishName)
-                {
-                    throw new Exception("Уже есть компонент с таким названием");
-                }
+                throw new Exception("Уже есть компонент с таким названием");
             }
+            int maxId = source.TypesOfFish.Count > 0 ? source.TypesOfFish.Max(rec =>
+            rec.Id) : 0;
             source.TypesOfFish.Add(new TypeOfFish
             {
                 Id = maxId + 1,
@@ -67,37 +60,30 @@ namespace FishFactoryServiceImplementList.Implementations
         }
         public void UpdElement(TypeOfFishBindingM model)
         {
-            int index = -1;
-
-            for (int i = 0; i < source.TypesOfFish.Count; ++i)
+            TypeOfFish element = source.TypesOfFish.FirstOrDefault(rec => rec.TypeOfFishName
+            == model.TypeOfFishName && rec.Id != model.Id);
+            if (element != null)
             {
-                if (source.TypesOfFish[i].Id == model.Id)
-                {
-                    index = i;
-                }
-                if (source.TypesOfFish[i].TypeOfFishName == model.TypeOfFishName &&
-                source.TypesOfFish[i].Id != model.Id)
-                {
-                    throw new Exception("Уже есть компонент с таким названием");
-                }
+                throw new Exception("Уже есть компонент с таким названием");
             }
-            if (index == -1)
+            element = source.TypesOfFish.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
-                throw new Exception("Элемент не найден");
+                throw new Exception("Элемент не найден"); 
             }
-            source.TypesOfFish[index].TypeOfFishName = model.TypeOfFishName;
+            element.TypeOfFishName = model.TypeOfFishName;
         }
         public void DelElement(int id)
         {
-            for (int i = 0; i < source.TypesOfFish.Count; ++i)
+            TypeOfFish element = source.TypesOfFish.FirstOrDefault(rec => rec.Id == id);
+            if (element != null)
             {
-                if (source.TypesOfFish[i].Id == id)
-                {
-                    source.TypesOfFish.RemoveAt(i);
-                    return;
-                }
+                source.TypesOfFish.Remove(element);
             }
-            throw new Exception("Элемент не найден");
+            else
+            {
+                throw new Exception("Элемент не найден");
+            }
         }
     }
 }

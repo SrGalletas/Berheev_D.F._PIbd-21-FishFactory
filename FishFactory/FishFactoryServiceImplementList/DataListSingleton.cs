@@ -15,6 +15,8 @@ namespace FishFactoryServiceImplementList
         public List<Request> Requests { get; set; }
         public List<CannedFood> CannedFoods { get; set; }
         public List<TypeOfCanned> TypeOfCanneds { get; set; }
+        public List<Storage> Storages { get; set; }
+        public List<StorageFish> StorageFishes { get; set; }
         private DataListSingleton()
         {
             Customers = new List<Customer>();
@@ -22,6 +24,8 @@ namespace FishFactoryServiceImplementList
             Requests = new List<Request>();
             CannedFoods = new List<CannedFood>();
             TypeOfCanneds = new List<TypeOfCanned>();
+            Storages = new List<Storage>();
+            StorageFishes = new List<StorageFish>();
         }
         public static DataListSingleton GetInstance()
         {

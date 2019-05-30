@@ -15,5 +15,6 @@ namespace FishFactoryServiceDAL.Interfaces
         void TakeRequestInWork(RequestBindingM model);
         void FinishRequest(RequestBindingM model);
         void PayRequest(RequestBindingM model);
+        void PutTypeOfFishOnStorage(StorageFishBindingM model);
     }
 }

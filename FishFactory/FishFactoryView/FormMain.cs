@@ -61,6 +61,17 @@ namespace FishFactoryView
             var form = Container.Resolve<CannedFoods>();
             form.ShowDialog();
         }
+        private void складыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<Storages>();
+            form.ShowDialog();
+        }
+
+        private void пополнитьСкладToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FullStorage>();
+            form.ShowDialog();
+        }
         private void buttonCreateRequest_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<CreateRequest>();
@@ -122,5 +133,7 @@ namespace FishFactoryView
         {
             LoadData();
         }
+
+       
     }
 }
