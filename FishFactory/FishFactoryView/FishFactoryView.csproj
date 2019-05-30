@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{21081A00-8C5C-4FEC-8501-CAA36CB73A79}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>FishFactoryView</RootNamespace>
+    <AssemblyName>FishFactoryView</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.5\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.9.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.9.5\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CannedFood.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CannedFood.Designer.cs">
+      <DependentUpon>CannedFood.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CannedFoods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CannedFoods.Designer.cs">
+      <DependentUpon>CannedFoods.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateRequest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateRequest.Designer.cs">
+      <DependentUpon>CreateRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Customer.Designer.cs">
+      <DependentUpon>Customer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Customers.Designer.cs">
+      <DependentUpon>Customers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeOfCanned.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TypeOfCanned.Designer.cs">
+      <DependentUpon>TypeOfCanned.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TypeOfFish.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TypeOfFish.Designer.cs">
+      <DependentUpon>TypeOfFish.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TypesOfFish.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TypesOfFish.Designer.cs">
+      <DependentUpon>TypesOfFish.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CannedFood.resx">
+      <DependentUpon>CannedFood.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CannedFoods.resx">
+      <DependentUpon>CannedFoods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateRequest.resx">
+      <DependentUpon>CreateRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Customer.resx">
+      <DependentUpon>Customer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Customers.resx">
+      <DependentUpon>Customers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="TypeOfCanned.resx">
+      <DependentUpon>TypeOfCanned.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TypeOfFish.resx">
+      <DependentUpon>TypeOfFish.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TypesOfFish.resx">
+      <DependentUpon>TypesOfFish.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FishFactoryModel\FishFactoryModel.csproj">
+      <Project>{fc3127df-a9ae-4916-9aea-1360fce48b45}</Project>
+      <Name>FishFactoryModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FishFactoryServiceDAL\FishFactoryServiceDAL.csproj">
+      <Project>{4f955128-8894-4f18-a29c-5ace7dfd8f94}</Project>
+      <Name>FishFactoryServiceDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FishFactoryServiceImplementList\FishFactoryServiceImplementList.csproj">
+      <Project>{ee3a94f8-50e4-4467-bd01-80e7667a7360}</Project>
+      <Name>FishFactoryServiceImplementList</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
